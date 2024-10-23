@@ -6,18 +6,25 @@ const getStoerdCart = () => {
     return [];
 }
 
-const addToLS = id => {
+const addToLS = (product) => {
     const cart = getStoerdCart();
-    cart.push(id);
-    // save to LS
+    const existingProduct = cart.find(item => item.id === product.id);
+    if (existingProduct) {
+        existingProduct.quantity += 1;
+    } else {
+        cart.push({ id: product.id, quantity: 1 });
+    }
     localStorage.setItem('cart', JSON.stringify(cart));
 }
 
 const removeFromLS = id => {
     let cart = getStoerdCart();
-    cart = cart.filter(cartId => cartId !== id);
-    // save to LS
+    cart = cart.filter(cartItem => cartItem.id !== id);
     localStorage.setItem('cart', JSON.stringify(cart));
 }
 
-export { addToLS, getStoerdCart, removeFromLS }
+const updateLS = (cart) => {
+    localStorage.setItem('cart', JSON.stringify(cart));
+}
+
+export { addToLS, getStoerdCart, removeFromLS, updateLS }
